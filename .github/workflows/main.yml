@@ -30,7 +30,7 @@ jobs:
           platformio run
 
       - name: Upload compiled firmware
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: esp32-firmware
           path: .pio/build/*/firmware.bin
