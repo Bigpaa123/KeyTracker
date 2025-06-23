@@ -1,0 +1,36 @@
+name: Build ESP32 Beacon Tracker
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install ESP32 Platform
+        run: |
+          mkdir -p ~/.arduino15/packages
+          pip install platformio
+          platformio platform install espressif32
+
+      - name: Compile firmware
+        run: |
+          platformio run
+
+      - name: Upload compiled firmware
+        uses: actions/upload-artifact@v3
+        with:
+          name: esp32-firmware
+          path: .pio/build/*/firmware.bin
